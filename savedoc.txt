@@ -1,0 +1,42 @@
+file:///C:/TFS/INT.VEBAT/Dev/Root/Libraries/VEBAT/VPI.VetEnvoy.BusinessLogic/Resources/vpi_logo2.png
+
+<img src="http://www.petinsurance.com/images/VSSimages/consumer/content/vpi_story_thumb1.jpg" alt="VPI">
+
+        public void GenerateInvoiceClaim(Dictionary<string, string> claimFields,)
+        {
+			// THIS
+            string invoiceClaimPdf = string.Format("IC_{0:MMddyyyy_hhmmss}.pdf", DateTime.Now);
+
+            var webGrabber = new APWebGrabber
+            {
+                OutputDirectory = pdfLocation,
+                Timeout = 60,
+                NewDocumentName = invoiceClaimPdf
+            };
+
+			// THIS
+            claimForm = Path.Combine(pdfLocation, invoiceClaimPdf);
+            documentGenerator.LoadClaimFormTemplateAndReplace(claimFields);
+            webGrabber.CreateFromHTMLText = documentGenerator.ClaimForm;
+            
+            int results = webGrabber.DoPrint(LOCALHOST, PORT_NUMBER);
+            if (results != 0)
+            {
+                throw new Exception("Can't successfully write: " + results.ToString());
+            }
+
+            webGrabber.CleanUp(LOCALHOST, PORT_NUMBER);
+            webGrabber.ClearVariables();
+            webGrabber = null;
+        }
+		
+Content-Length: 87
+Cache-Control: private
+Content-Type: text/xml; charset=utf-8
+Date: Thu, 04 Oct 2012 20:23:50 GMT
+Server: Microsoft-IIS/6.0
+X-AspNet-Version: 2.0.50727
+X-Powered-By: ASP.NET
+
+<?xml version="1.0" encoding="UTF-8"?>
+<c id="ebe5ce4a-4476-4a20-b526-0b8d8dedc575" />		
